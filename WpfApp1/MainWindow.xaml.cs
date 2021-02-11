@@ -40,14 +40,15 @@ namespace WpfApp1
             
             //创建ManagementObjectSearcher对象
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMedia");
-            String strHardDiskID = null;//存储磁盘序列号
+            //存储磁盘序列号
             //调用ManagementObjectSearcher类的Get方法取得硬盘序列号
             foreach (ManagementObject mo in searcher.Get())
             {
-                strHardDiskID = mo["SerialNumber"].ToString().Trim();//记录获得的磁盘序列号
-                break;
+               //记录获得的磁盘序列号
+                ListBox1.Items.Add( "硬盘序列号: "+mo["SerialNumber"].ToString().Trim());//显示硬盘序列号
+               
             }
-            ListBox1.Items.Add( "硬盘序列号: "+strHardDiskID);//显示硬盘序列号
+            
             ManagementClass mc = new ManagementClass("Win32_DiskDrive");
             ManagementObjectCollection moj = mc.GetInstances();
             foreach (ManagementObject m in moj)
@@ -63,27 +64,29 @@ namespace WpfApp1
                 if (m.Properties["TotalVisibleMemorySize"].Value != null)
                 {
                     sizeAll += Convert.ToDouble(m.Properties["TotalVisibleMemorySize"].Value.ToString());
+                     ListBox1.Items.Add("内存大小:" +sizeAll.ToString());
                 }
             }
-            mc = null;
-            moc.Dispose();
-            ListBox1.Items.Add("内存大小:" +sizeAll.ToString());
+           
+            
+           
             
            
 
             //获取CPU序列号代码 
-            string cpuInfo = "";//cpu序列号 
+           
             ManagementClass mc2 = new ManagementClass("Win32_Processor");
             ManagementObjectCollection moc1 = mc2.GetInstances();
             foreach (ManagementObject mo in moc1)
             {
-                cpuInfo = mo.Properties["ProcessorId"].Value.ToString();
+               
+                 ListBox1.Items.Add("CPU编号:" + mo.Properties["ProcessorId"].Value.ToString());
             }
           
-            ListBox1.Items.Add("CPU编号:" + cpuInfo);
+           
 
             //获取网卡硬件地址 
-            string mac = "";
+            
             ManagementClass mc3 = new ManagementClass("Win32_NetworkAdapterConfiguration");
             ManagementObjectCollection moc4 = mc3.GetInstances();
             foreach (ManagementObject mo in moc4)
@@ -99,7 +102,7 @@ namespace WpfApp1
            
 
             //获取IP地址 
-            string st = "";
+            
             ManagementClass mc5 = new ManagementClass("Win32_NetworkAdapterConfiguration");
             ManagementObjectCollection moc3 = mc5.GetInstances();
             foreach (ManagementObject mo in moc3)
@@ -109,7 +112,7 @@ namespace WpfApp1
                     //st=mo["IpAddress"].ToString(); 
                     System.Array ar;
                     ar = (System.Array)(mo.Properties["IpAddress"].Value);
-                    st = ar.GetValue(0).ToString();
+                    string st = ar.GetValue(0).ToString();
                     ListBox1.Items.Add("IP地址:" + st);
                     
                 }

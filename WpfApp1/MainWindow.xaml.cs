@@ -29,6 +29,16 @@ namespace WpfApp1
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
+            //创建ManagementObjectSearcher对象
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMedia");
+            String strHardDiskID = null;//存储磁盘序列号
+            //调用ManagementObjectSearcher类的Get方法取得硬盘序列号
+            foreach (ManagementObject mo in searcher.Get())
+            {
+                strHardDiskID = mo["SerialNumber"].ToString().Trim();//记录获得的磁盘序列号
+                break;
+            }
+            ListBox1.Items.Add( "硬盘序列号: "+strHardDiskID);//显示硬盘序列号
             ManagementClass mc = new ManagementClass("Win32_DiskDrive");
             ManagementObjectCollection moj = mc.GetInstances();
             foreach (ManagementObject m in moj)
@@ -108,7 +118,7 @@ namespace WpfApp1
             }
             moc = null;
             mc = null;
-            ListBox1.Items.Add(st);
+            ListBox1.Items.Add("IP地址:"+st);
             //获取硬盘ID 
             String HDid = "";
             ManagementClass mc6 = new ManagementClass("Win32_DiskDrive");

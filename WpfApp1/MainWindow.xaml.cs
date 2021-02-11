@@ -79,8 +79,7 @@ namespace WpfApp1
             {
                 cpuInfo = mo.Properties["ProcessorId"].Value.ToString();
             }
-            moc = null;
-            mc = null;
+          
             ListBox1.Items.Add("CPU编号:" + cpuInfo);
 
             //获取网卡硬件地址 
@@ -91,13 +90,12 @@ namespace WpfApp1
             {
                 if ((bool)mo["IPEnabled"] == true)
                 {
-                    mac = mo["MacAddress"].ToString();
-                    break;
+                   
+                    ListBox1.Items.Add("MAC地址:" + mo["MacAddress"].ToString());
                 }
             }
-            moc = null;
-            mc = null;
-            ListBox1.Items.Add("MAC地址:" + mac);
+           
+            
            
 
             //获取IP地址 
@@ -112,34 +110,34 @@ namespace WpfApp1
                     System.Array ar;
                     ar = (System.Array)(mo.Properties["IpAddress"].Value);
                     st = ar.GetValue(0).ToString();
-                    break;
+                    ListBox1.Items.Add("IP地址:" + st);
+                    
                 }
             }
-            moc = null;
-            mc = null;
-            ListBox1.Items.Add("IP地址:"+st);
-            //获取硬盘ID 
-            String HDid = "";
+           
+            
+            
+           
             ManagementClass mc6 = new ManagementClass("Win32_DiskDrive");
             ManagementObjectCollection moc5 = mc6.GetInstances();
             foreach (ManagementObject mo in moc5)
-            {
-                HDid = (string)mo.Properties["Model"].Value;
+            {             
+                ListBox1.Items.Add("磁盘名称:" + (string)mo.Properties["Model"].Value);
             }
-            moc = null;
-            mc = null;
-            ListBox1.Items.Add("磁盘名称:"+HDid);
+           
+           
 
-            string st2 = "";
+            
             ManagementClass mc7 = new ManagementClass("Win32_ComputerSystem");
             ManagementObjectCollection moc6 = mc7.GetInstances();
             foreach (ManagementObject mo in moc6)
             {
-                st2 = mo["SystemType"].ToString();
+                
+                
+                ListBox1.Items.Add("PC类型:" + mo["SystemType"].ToString());
             }
-            moc = null;
-            mc = null;
-            ListBox1.Items.Add("PC类型:"+st2);
+            
+            
             //计算机名
             ListBox1.Items.Add("计算机名:"+System.Environment.GetEnvironmentVariable("ComputerName"));
         }

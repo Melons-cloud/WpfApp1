@@ -29,6 +29,15 @@ namespace WpfApp1
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
+            
+            ManagementObjectSearcher objvide = new ManagementObjectSearcher("select * from Win32_VideoController");
+            
+            foreach (ManagementObject obj in objvide.Get())
+            { 
+                ListBox1.Items.Add("显卡 - " + obj["Name"]);
+           
+            }
+            
             //创建ManagementObjectSearcher对象
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMedia");
             String strHardDiskID = null;//存储磁盘序列号
@@ -59,18 +68,8 @@ namespace WpfApp1
             mc = null;
             moc.Dispose();
             ListBox1.Items.Add("内存大小:" +sizeAll.ToString());
-            long num = 0L;
-            string str_HardDiskName = "c";
-            str_HardDiskName = str_HardDiskName + @":\";
-            foreach (DriveInfo info in DriveInfo.GetDrives())
-            {
-                if (info.Name.ToUpper() == str_HardDiskName.ToUpper())
-                {
-                    num = info.TotalFreeSpace / 0x100000L;
-                }
-            }
             
-            ListBox1.Items.Add(str_HardDiskName+"剩余空间:"+num);
+           
 
             //获取CPU序列号代码 
             string cpuInfo = "";//cpu序列号 
@@ -129,7 +128,7 @@ namespace WpfApp1
             }
             moc = null;
             mc = null;
-            ListBox1.Items.Add("磁盘Id:"+HDid);
+            ListBox1.Items.Add("磁盘名称:"+HDid);
 
             string st2 = "";
             ManagementClass mc7 = new ManagementClass("Win32_ComputerSystem");
